@@ -1,0 +1,30 @@
+diff --git a/UM2Former/UnetFormer/UnetFormer.py b/UM2Former/UnetFormer/UnetFormer.py
+index c2c1239..db5a622 100644
+--- a/UM2Former/UnetFormer/UnetFormer.py
++++ b/UM2Former/UnetFormer/UnetFormer.py
+@@ -133,11 +133,13 @@ class GlobalLocalAttention(nn.Module):
+             trunc_normal_(self.relative_position_bias_table, std=.02)
+ 
+     def pad(self, x, ps):
+-        _, _, H, W = x.size()
+-        if W % ps != 0:
+-            x = F.pad(x, (0, ps - W % ps), mode='reflect')
+-        if H % ps != 0:
+-            x = F.pad(x, (0, 0, 0, ps - H % ps), mode='reflect')
++        _, _, H, W = x.size()
++        if W % ps != 0:
++            pad_w = ps - W % ps
++            x = F.pad(x, (0, pad_w, 0, 0), mode='reflect' if pad_w < W else 'replicate')
++        if H % ps != 0:
++            pad_h = ps - H % ps
++            x = F.pad(x, (0, 0, 0, pad_h), mode='reflect' if pad_h < H else 'replicate')
+         return x
+ 
+     def pad_out(self, x):
+@@ -343,4 +345,4 @@ class UNetFormer(nn.Module):
+         res1, res2, res3, res4 = self.backbone(x)
+         x = self.decoder(res1, res2, res3, res4, h, w)
+ 
+-        return x
+\ No newline at end of file
++        return x

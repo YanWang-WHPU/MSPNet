@@ -1,0 +1,20 @@
+{
+  "data_root": "data/hfz3",
+  "split_dir": "data/hfz3/splits_spatial_uavtrain",
+  "out_dir": "outputs/mspnet",
+  "label_mode": "triclass",
+  "epochs": 100,
+  "batch_size": 8,
+  "lr": 0.001,
+  "base": 24,
+  "seed": 2026,
+  "augment_factor": 2,
+  "class_weighting": "sqrt_inverse",
+  "dice_weight": 0.5,
+  "prototype_input": true,
+  "ground_prototype_ratio": 0.2,
+  "boundary_weight": 0.05,
+  "teacher_boundary_dir": "teacher_boundaries_soft",
+  "teacher_valid_dir": "teacher_valid",
+  "selection_metric": "mIoU"
+}
